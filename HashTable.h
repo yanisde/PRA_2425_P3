@@ -21,7 +21,13 @@ private:
         for (size_t i = 0; i < key.size(); i++) sum += int(key.at(i));
         return sum % max;
     }
-
+	int findPos(int idx, const std::string& key) {
+        int len = table[idx]->size();
+        for (int i = 0; i < len; i++) {
+            if (table[idx]->get(i).key == key) return i;
+        }
+        return -1;
+    }
 public:
     HashTable(int size) : n(0), max(size) {
         if (size <= 0) throw std::runtime_error("Invalid hash table size");
@@ -36,23 +42,23 @@ public:
 
     void insert(std::string key, V value) override {
         int idx = h(key);
-        try {
-            table[idx]->search(TableEntry<V>(key));
-            throw std::runtime_error("Key already exists");
-        } catch (const std::runtime_error&) {
-            table[idx]->insert(TableEntry<V>(key, value));
-            n++;
-        }
+        if (findPos(idx, key) != -1) throw std::runtime_error("Key already exists");
+        int len = table[idx]->size();
+        table[idx]->insert(len, TableEntry<V>(key, value));
+        n++;
     }
 
     V search(std::string key) override {
         int idx = h(key);
-        TableEntry<V> te = table[idx]->search(TableEntry<V>(key));
-        return te.value;
+	int pos = findPos(idx, key);
+        if (pos == -1) throw std::runtime_error("Key not found");
+        return table[idx]->get(pos).value;
     }
 
     V remove(std::string key) override {
         int idx = h(key);
+	int pos = findPos(idx, key);
+	 if (pos == -1) throw std::runtime_error("Key not found");
         TableEntry<V> te = table[idx]->remove(TableEntry<V>(key));
         n--;
         return te.value;
