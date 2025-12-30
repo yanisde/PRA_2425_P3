@@ -6,8 +6,8 @@
 #include <string>
 #include "Dict.h"
 #include "TableEntry.h"
-#include "../PRA_2526_P1/ListLinked.h"
 
+#include "../PRA_2526_P1/ListLinked.h"
 
 template <typename V>
 class HashTable : public Dict<V> {
@@ -21,13 +21,15 @@ private:
         for (size_t i = 0; i < key.size(); i++) sum += int(key.at(i));
         return sum % max;
     }
-	int findPos(int idx, const std::string& key) {
+
+    int findPos(int idx, const std::string& key) {
         int len = table[idx]->size();
         for (int i = 0; i < len; i++) {
             if (table[idx]->get(i).key == key) return i;
         }
         return -1;
     }
+
 public:
     HashTable(int size) : n(0), max(size) {
         if (size <= 0) throw std::runtime_error("Invalid hash table size");
@@ -50,16 +52,16 @@ public:
 
     V search(std::string key) override {
         int idx = h(key);
-	int pos = findPos(idx, key);
+        int pos = findPos(idx, key);
         if (pos == -1) throw std::runtime_error("Key not found");
         return table[idx]->get(pos).value;
     }
 
     V remove(std::string key) override {
         int idx = h(key);
-	int pos = findPos(idx, key);
-	 if (pos == -1) throw std::runtime_error("Key not found");
-        TableEntry<V> te = table[idx]->remove(TableEntry<V>(key));
+        int pos = findPos(idx, key);
+        if (pos == -1) throw std::runtime_error("Key not found");
+        TableEntry<V> te = table[idx]->remove(pos);
         n--;
         return te.value;
     }
