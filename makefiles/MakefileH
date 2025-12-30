@@ -1,0 +1,4 @@
+bin/testHashTable: testHashTable.cpp Dict.h HashTable.h TableEntry.h
+	mkdir -p bin
+	g++ -I../PRA_2526_P1 -o bin/testHashTable testHashTable.cpp
+
