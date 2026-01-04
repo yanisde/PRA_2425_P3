@@ -46,7 +46,7 @@ public:
         int idx = h(key);
         if (findPos(idx, key) != -1) throw std::runtime_error("Key already exists");
         int len = table[idx]->size();
-        table[idx]->insert(len, TableEntry<V>(key, value));
+        table[idx]->prepend(TableEntry<V>(key, value));
         n++;
     }
 
