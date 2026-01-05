@@ -9,8 +9,6 @@ class BSNode {
     	T elem;
     	BSNode<T>* left;
     	BSNode<T>* right;
-
-t add BSNode.h
 	BSNode(T elem, BSNode<T>* left = nullptr, BSNode<T>* right = nullptr)
         : elem(elem), left(left), right(right) {}
 
